@@ -13,6 +13,7 @@ standards/                 Rules every module follows
   readme-format.md         Module README format
   diagrams.md              Diagram rules and diagram selection
   notations/               One file per notation (C4, ...)
+  commits.md               Commit message convention
 templates/
   design-README.md         Starting point for a module README
 .claude/skills/            Project skills
@@ -32,5 +33,6 @@ templates/
 - [README format](standards/readme-format.md)
 - [Diagrams](standards/diagrams.md)
 - [C4 notation](standards/notations/c4.md)
+- [Commit messages](standards/commits.md)
 
 A standard changes before the work that depends on the change. A module never deviates from a standard silently; it records the deviation in its Trade-offs section.
