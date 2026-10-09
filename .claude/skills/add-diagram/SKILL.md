@@ -33,25 +33,27 @@ Each element traces to a requirement ID or a Trade-offs row in the module README
 
 ### 3. Draw
 
-- Call `mcp__excalidraw__read_me` once per session, then draw with `mcp__excalidraw__create_view`.
+- Write the diagram as Excalidraw element skeletons to `designs/<design-name>/diagrams/<nn>-<type>[-<subject>].tmp.json`. The skeleton format is the one `mcp__excalidraw__read_me` documents. Give every label an explicit `strokeColor` of `#1e1e1e`; a label otherwise takes its container's stroke colour.
 - Apply the shapes, palette rows, label format, title form and sizes from the standards. Do not choose a shape, colour, size or line style that the standards do not set. If the standards do not cover a case, stop and propose a rule.
 - Build the legend from the element types and line styles in use.
-- Run the checklist in `standards/diagrams.md`, section 8, before showing the diagram.
+- To change an existing diagram, start from its `.excalidraw` file.
 
-### 4. Iterate
+### 4. Render and inspect
 
-Revise from the returned checkpoint. Re-run the checklist after each revision. Report any rule a requested change would break before making the change.
+- Run `node tools/render.mjs <file>`. It finishes in under 15 seconds or stops itself.
+- Read `<base>.tmp.png`. Run the checklist in `standards/diagrams.md`, section 8, against what the image shows.
+- Fix every failure and render again. Repeat until the checklist passes.
+- Show the preview to the user. State any deviation from the agreed content.
 
-### 5. Save
+### 5. Iterate
 
-After the user approves the diagram:
+Apply the user's changes to the temp file, then repeat step 4. Report any rule a requested change would break before making the change.
 
-- Write the source to `designs/<design-name>/diagrams/<nn>-<type>[-<subject>].excalidraw` as an Excalidraw file: `{"type": "excalidraw", "version": 2, "source": "architectures", "elements": [...], "appState": {"viewBackgroundColor": "#ffffff"}, "files": {}}`.
-  - Omit camera, checkpoint and delete pseudo-elements.
-  - Write each shape label and arrow label as a separate `text` element with `containerId` set to the shape or arrow, and list it in that element's `boundElements`.
-- Produce the export with the same base name and the `.svg` extension, using the export settings in `standards/diagrams.md`, section 2. If the session has no tool that exports an Excalidraw file, ask the user to export it from Excalidraw and save it at that path. Do not embed a missing image in the README.
+### 6. Promote
 
-### 6. Update the README
+After the checklist passes and the user approves the diagram, run `node tools/render.mjs --promote designs/<design-name>/diagrams/<base>`. Confirm that `<base>.excalidraw` and `<base>.svg` exist and that no `<base>.tmp.*` file remains.
+
+### 7. Update the README
 
 - Add or update the `### 2.<n>` subsection for the diagram, in level order.
 - Check that element names in the Requirements `Met by` column and the Trade-offs table match the diagram labels exactly.
