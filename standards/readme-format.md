@@ -34,12 +34,15 @@ One paragraph that describes how the system works end to end.
 Then one subsection per diagram, ordered from the highest level to the lowest:
 
 ```
-### 2.<n> <Diagram title>
+### 2.<n> <Diagram type> diagram
 
 ![<Diagram title>](diagrams/<file>.svg)
 
 <One paragraph: what the diagram shows and the question it answers.>
 ```
+
+- The heading names the diagram type, with `: <subject>` appended for component and dynamic diagrams. The image text is the title on the diagram.
+- Further paragraphs may follow for behaviour that the diagram does not show. Each starts with a term in bold.
 
 ### 3. Trade-offs
 
@@ -59,4 +62,4 @@ Rules:
 
 ### 4. Open questions
 
-A bullet list of unconfirmed assumptions, unmet requirements and unresolved questions. Each bullet states what is unknown and what would resolve it. An assumption starts with `Assumption:`.
+A bullet list of unconfirmed assumptions, unmet requirements and unresolved questions. Each bullet states what is unknown and what would resolve it. An assumption starts with `Assumption:` and names the requirements that depend on it.

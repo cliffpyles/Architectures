@@ -24,19 +24,31 @@ Rules:
 
 - Location: `designs/<design-name>/diagrams/`.
 - Name: `<nn>-<type>[-<subject>]`, lower case, hyphenated. `nn` orders diagrams from the highest level to the lowest. Examples: `01-context`, `02-container`, `03-component-cms`, `04-dynamic-publish`.
-- Every diagram has two files with the same base name: the source (`.excalidraw`) and the export (`.svg`).
-- The export is regenerated whenever the source changes. They are committed together.
-- Export settings: SVG, background on, light mode, embed scene off.
+- Every diagram has two permanent files with the same base name: the source (`.excalidraw`) and the export (`.svg`). They are committed together.
+- Work in progress uses temp files with the same base name. Git ignores them (`*.tmp.*`).
+
+  | Temp file | Content |
+  |---|---|
+  | `<base>.tmp.json` | Element skeletons, the input to the render tool |
+  | `<base>.tmp.excalidraw` | Source, generated from the skeletons |
+  | `<base>.tmp.svg` | Export |
+  | `<base>.tmp.png` | Preview of the export |
+
+- `node tools/render.mjs <file>` renders a `.tmp.json` or `.excalidraw` file to temp files. It sets the export options: background on, light mode, scene not embedded.
+- A diagram is inspected in its preview before it is shown or promoted. A diagram that has not been rendered is not shown and not promoted.
+- `node tools/render.mjs --promote <base>` moves the temp source and export to their permanent names and deletes the other temp files. Promote only when the checklist in section 8 passes on the preview and the user has approved the diagram.
+- To change a permanent diagram, render its `.excalidraw` file, edit, inspect the preview, and promote again.
 
 ## 3. Content
 
 1. Every element on the diagram traces to a requirement or a trade-off in the module README.
 2. Every element has a name. An element keeps the same name in every diagram and in the README.
-3. Every element type has exactly one shape and one colour, set by the notation file.
-4. Colour is never the only carrier of meaning. Shape, line style or text carries it as well.
-5. A diagram has at most 15 elements, excluding the legend. Split a larger diagram by subject.
-6. Every diagram has a title, at the top left, in the form the notation file sets.
-7. A note is used only for information that elements and relationships cannot express. A note has at most two lines.
+3. The pieces of a composite shape (person, cylinder, bucket, cloud) and its label form one group.
+4. Every element type has exactly one shape and one colour, set by the notation file.
+5. Colour is never the only carrier of meaning. Shape, line style, text or position relative to a boundary carries it as well.
+6. A diagram has at most 15 elements, excluding the legend. Split a larger diagram by subject.
+7. Every diagram has a title, at the top left, in the form the notation file sets.
+8. A note is used only for information that elements and relationships cannot express. A note has at most two lines.
 
 ## 4. Relationships
 
@@ -53,12 +65,12 @@ Rules:
 
 ## 5. Layout and style
 
-1. The main flow runs left to right or top to bottom. Users are at the left or top. Data stores are at the right or bottom.
+1. The main flow runs left to right or top to bottom. People are at the left or top. A data store is to the right of or below the elements that write to it.
 2. Elements of the same type have the same size. Elements align to rows and columns.
 3. The gap between elements is at least 60 px. A gap that holds an arrow label is at least the label width plus 40 px.
 4. Text sizes: title 28, element name 20, all other text 16. No text is smaller than 16.
 5. Text colour is `#1e1e1e` on every fill.
-6. Stroke width is 2 for elements and arrows, and 1 for notes, boundaries and the legend. Roughness and font stay at the Excalidraw defaults.
+6. Stroke width is 2 for elements and arrows, and 1 for notes, boundaries and the legend. Roughness and font stay at the Excalidraw defaults. A fill piece with no outline, used to build a composite shape, has roughness 0.
 7. Do not use emoji or icons from outside the notation file.
 
 ## 6. Palette
@@ -91,10 +103,11 @@ Run before a diagram is shown for approval and again before it is saved.
 - [ ] Every element has the same name in every diagram and in the README.
 - [ ] Each element uses the shape and palette row its notation file assigns.
 - [ ] Every arrow has one arrowhead, a verb-phrase label, and the correct direction and line style.
-- [ ] No arrow crosses an element. No text overlaps another element.
+- [ ] No arrow crosses an element or another arrow.
 - [ ] Text sizes are 28, 20 and 16 only.
 - [ ] The title is present and in the notation's form.
 - [ ] The legend lists exactly the element types and line styles in use, with matching shapes.
 - [ ] The element count is 15 or fewer.
 - [ ] Labels and notes follow the [writing standard](writing.md).
-- [ ] Source and export exist with the same base name, and the export matches the source.
+- [ ] The preview has been inspected: no text leaves its shape, no label overlaps an element or another label, and no shape is malformed.
+- [ ] After promotion: source and export exist with the same base name, and no temp files remain.

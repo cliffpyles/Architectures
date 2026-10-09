@@ -13,7 +13,7 @@
 
 <One paragraph: how the system works end to end.>
 
-### 2.1 <Diagram title>
+### 2.1 <Diagram type> diagram
 
 ![<Diagram title>](diagrams/<file>.svg)
 
