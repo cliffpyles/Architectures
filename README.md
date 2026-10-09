@@ -16,6 +16,8 @@ standards/                 Rules every module follows
   commits.md               Commit message convention
 templates/
   design-README.md         Starting point for a module README
+tools/
+  render.mjs               Renders a diagram to temp files; promotes temp files
 .claude/skills/            Project skills
 ```
 
